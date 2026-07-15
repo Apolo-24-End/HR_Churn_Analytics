@@ -46,7 +46,8 @@ def get_department_breakdown() -> list[dict]:
 def get_demographics() -> dict:
     active = get_active_employees()
 
-    gender = active["Sex"].value_counts().to_dict()
+    _gender_map = {"M": "Masculino", "F": "Femenino"}
+    gender = {_gender_map.get(k, k): v for k, v in active["Sex"].value_counts().items()}
 
     marital = active["MaritalDesc"].value_counts().to_dict()
 
