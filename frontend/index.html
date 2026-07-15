@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Executive Dashboard</title>
+
+  <!-- Tailwind CSS (utilidades base) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <!-- ─── LOADER ──────────────────────────────────────────────── -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Cargando dashboard...</p>
+  </div>
+
+  <!-- ─── SIDEBAR ─────────────────────────────────────────────── -->
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <span>Panel Ejecutivo</span>
+      <h2>HR Dashboard</h2>
+    </div>
+
+    <div id="nav-workforce" class="nav-item active" data-section="workforce">
+      <span class="nav-icon">👥</span> Fuerza Laboral
+    </div>
+    <div id="nav-retention" class="nav-item" data-section="retention">
+      <span class="nav-icon">📉</span> Retención
+    </div>
+    <div id="nav-risk" class="nav-item" data-section="risk">
+      <span class="nav-icon">🤖</span> Riesgo ML
+    </div>
+
+    <div class="sidebar-footer">
+      <p>Dataset: HRDataset v14<br/>311 empleados · 6 departamentos</p>
+    </div>
+  </nav>
+
+  <!-- ─── CONTENIDO PRINCIPAL ──────────────────────────────────── -->
+  <main id="main-content">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECCIÓN 1 — FUERZA LABORAL
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="section-workforce" class="section active">
+      <div class="page-header">
+        <div>
+          <h1>Fuerza Laboral</h1>
+          <p>Vista general del capital humano activo en la organización</p>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total empleados</div>
+          <div class="kpi-value" id="kpi-total">—</div>
+          <div class="kpi-sub">Histórico total</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Empleados activos</div>
+          <div class="kpi-value" id="kpi-active">—</div>
+          <div class="kpi-sub">En planilla actualmente</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Salario promedio</div>
+          <div class="kpi-value" id="kpi-salary">—</div>
+          <div class="kpi-sub">Empleados activos</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tasa de rotación</div>
+          <div class="kpi-value" id="kpi-turnover">—</div>
+          <div class="kpi-sub">Rotación histórica global</div>
+        </div>
+      </div>
+
+      <!-- Gráficas fila 1 -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Headcount activo por departamento</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-dept-headcount"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Distribución de género</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-gender"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficas fila 2 -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Distribución salarial</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-salary"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Antigüedad promedio por departamento (años)</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-tenure-dept"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECCIÓN 2 — RETENCIÓN
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="section-retention" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Análisis de Retención</h1>
+          <p>Rotación histórica, razones de salida y tendencias por fuente de reclutamiento</p>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Tasa de retención</div>
+          <div class="kpi-value" id="kpi-ret-rate">—</div>
+          <div class="kpi-sub">Empleados que permanecen</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tasa de rotación</div>
+          <div class="kpi-value" id="kpi-ret-turnover">—</div>
+          <div class="kpi-sub">Empleados que salieron</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Total terminaciones</div>
+          <div class="kpi-value" id="kpi-ret-term">—</div>
+          <div class="kpi-sub">Histórico</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Permanencia promedio</div>
+          <div class="kpi-value" id="kpi-ret-tenure">—</div>
+          <div class="kpi-sub">Antes de salir</div>
+        </div>
+      </div>
+
+      <!-- Gráficas fila 1 -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Rotación por departamento (%)</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-dept-turnover"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Top 10 razones de terminación</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-term-reasons"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficas fila 2 -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Tendencia: Contrataciones vs Terminaciones por año</h3>
+          <div class="chart-wrapper tall">
+            <canvas id="chart-trend"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Contratados vs Terminados por fuente de reclutamiento</h3>
+          <div class="chart-wrapper tall">
+            <canvas id="chart-source-turnover"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECCIÓN 3 — RIESGO ML
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="section-risk" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Panel de Riesgo ML</h1>
+          <p>Predicción de riesgo de rotación por empleado usando el mejor modelo de clasificación</p>
+        </div>
+        <div class="model-badge">
+          🏆 Mejor modelo: <strong id="best-model-name">—</strong>
+        </div>
+      </div>
+
+      <!-- Métricas del modelo -->
+      <div class="chart-card" style="margin-bottom: 20px;">
+        <h3>Desempeño del modelo seleccionado</h3>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="val" id="metric-auc">—</div>
+            <div class="lbl">ROC-AUC</div>
+          </div>
+          <div class="metric-item">
+            <div class="val" id="metric-f1">—</div>
+            <div class="lbl">F1-Score</div>
+          </div>
+          <div class="metric-item">
+            <div class="val" id="metric-acc">—</div>
+            <div class="lbl">Accuracy</div>
+          </div>
+        </div>
+
+        <!-- Tabla comparativa de modelos -->
+        <div style="margin-top: 20px; overflow-x: auto;">
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>ROC-AUC</th>
+                <th>F1-Score</th>
+                <th>Accuracy</th>
+              </tr>
+            </thead>
+            <tbody id="models-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Gráficas ML -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Distribución de riesgo — empleados activos</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-risk-dist"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Top 10 factores de riesgo (feature importance)</h3>
+          <div class="chart-wrapper">
+            <canvas id="chart-feature-importance"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de empleados con riesgo -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Empleados activos ordenados por riesgo de rotación</h3>
+          <button class="toggle-btn" id="btn-anon">🙈 Anonimizar</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th>Empleado</th>
+                <th>Departamento</th>
+                <th>Cargo</th>
+                <th>Score de riesgo</th>
+                <th>Nivel</th>
+                <th>Ausencias</th>
+              </tr>
+            </thead>
+            <tbody id="risk-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- /main-content -->
+
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

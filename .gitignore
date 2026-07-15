@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+
+# ML artifacts (se regeneran al arrancar)
+ml/artifacts/*.pkl
+
+# OS
+.DS_Store
+Thumbs.db
